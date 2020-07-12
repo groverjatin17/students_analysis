@@ -1,4 +1,4 @@
-const baseURL = "http://140.184.230.103:5000/";
+const baseURL = "http://localhost:5000/";
 export default {
   fetchCountries: `${baseURL}country`,
   fetchStudentsByYear: `${baseURL}students`,
@@ -13,7 +13,6 @@ export default {
   fetchAgeByFacultyAndCountry: `${baseURL}facultyandcountry/age`,
   fetchGenderByFacultyAndCountry: `${baseURL}facultyandcountry/gender`,
   fetchFaculties: `${baseURL}faculties`,
-  
 
-  fetchApi: `${baseURL}api`  
+  fetchApi: `${baseURL}api`,
 };
