@@ -1,12 +1,7 @@
 import React, { PureComponent } from "react";
 import { PieChart, Pie, Sector } from "recharts";
 
-const data = [
-  { name: "Female", value: 52 },
-  { name: "Male", value: 7 },
-];
-
-const renderActiveShape = (props) => {
+const animatePie = (props) => {
   const RADIAN = Math.PI / 180;
   const {
     cx,
@@ -65,7 +60,7 @@ const renderActiveShape = (props) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >{`PV ${value}`}</text>
+      >{`Count ${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -79,7 +74,7 @@ const renderActiveShape = (props) => {
   );
 };
 
-export default class JatinDoughnut extends PureComponent {
+export default class DoughnutChart extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,15 +88,35 @@ export default class JatinDoughnut extends PureComponent {
     });
   };
 
+  expandedForm = (data) => {
+    let expandedDataArray = [...data];
+    expandedDataArray = expandedDataArray.map((item) => {
+      if (item.name === "F") {
+        return {
+          name: "Female",
+          value: item.value,
+        };
+      } else if (item.name === "M") {
+        return {
+          name: "Male",
+          value: item.value,
+        };
+      }
+    });
+    return expandedDataArray;
+  };
+
   render() {
-    console.log("JatinDoughnut -> render -> this.props", this.props);
     let { data } = this.props;
-    data = data.length > 0 ? data : [{ name: "Student", value: 100 }];
+    data =
+      data.length > 0
+        ? this.expandedForm(data)
+        : [{ name: "Student", value: 100 }];
     return (
       <PieChart width={400} height={400}>
         <Pie
           activeIndex={this.state.activeIndex}
-          activeShape={renderActiveShape}
+          activeShape={animatePie}
           data={data}
           cx={200}
           cy={200}

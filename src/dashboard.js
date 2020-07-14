@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Card from "@material-ui/core/Card";
+import Drawer from "@material-ui/core/Drawer";
 
 import fetch from "./utils/fetch";
 import endpoints from "./utils/endpoints";
@@ -19,146 +20,74 @@ import { color } from "d3";
 import "./dashboard.css";
 import AgeBarGraphs from "./components/AgeBarGraph";
 
-import { fetchCountries } from "./utils/apiStore";
-import JatinDoughnut from "./components/JatinDoughnut";
+import List from "@material-ui/core/List";
+import Divider from "@material-ui/core/Divider";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ChevronRight from "@material-ui/icons/ChevronRight";
+
+import {
+  fetchCountries,
+  fetchFaculties,
+  fetchJsonCountries,
+  fetchGrad,
+  fetchUnderGrads,
+  fetchStudentsByYear,
+  fetchStudentsByAge,
+  fetchGendersByCountry,
+} from "./utils/apiStore";
+import DoughnutChart from "./components/DoughnutChart";
 
 const useStyles = makeStyles((theme) => ({
   gridMain: {
     padding: "16px",
   },
+  sidebar: {
+    width: 300,
+  },
 }));
 
-const defaultGender = [
-  {
-    value: 0,
-    label: "",
-  },
-];
-
-const Dashboard = () => {
+const Dashboard = (props) => {
   const classes = useStyles();
   const [country, setCountry] = useState("");
   const [faculty, setFaculty] = useState("");
   const [countries, setCountries] = useState([]);
   const [faculties, setFaculties] = useState([]);
   const [genders, setGenders] = useState([]);
-  const [StudentsByYearArray, setStudentsByYears] = useState([]);
+  const [studentsByYearArray, setStudentsByYears] = useState([]);
   const [GradUnderGradArray, setGradUnderGrad] = useState([]);
-  const [data1, setdata1] = useState([]);
-  const [data2, setdata2] = useState([]);
+  const [grads, setGrads] = useState([]);
+  const [underGrads, setUndergrads] = useState([]);
   const [JsonCountries, setJsonCountries] = useState([]);
   const [GradData, setGradData] = useState(null);
   const [color, setColor] = useState("");
   const [studentsByAge, setStudentsByAge] = useState([]);
 
   useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const resp = await fetch("GET", endpoints.fetchCountries);
-        const countryArray = resp.map((country) => country.citizenship);
-        setCountries(countryArray);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    const fetchFaculties = async () => {
-      try {
-        const resp = await fetch("GET", endpoints.fetchFaculties);
-        const facultiesArray = resp.map((faculties) => faculties.faculty);
-        setFaculties(facultiesArray);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    const fetchJsonCountries = async () => {
-      try {
-        const JsonCountry = await fetch("GET", endpoints.fetchApi);
-        setJsonCountries(JsonCountry);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    const fetchGrad = async () => {
-      try {
-        const Grad = await fetch("GET", endpoints.fetchGrad);
-        setdata1(Grad);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    const fetchUnderGrad = async () => {
-      try {
-        const UnderGrad = await fetch("GET", endpoints.fetchUnderGrad);
-        setdata2(UnderGrad);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    const fetchStudentsByYear = async () => {
-      try {
-        const StudentsByYear = await fetch(
-          "GET",
-          endpoints.fetchStudentsByYear
-        );
-        const students = StudentsByYear.map((student) => ({
-          Enroll_Year: +student.Enroll_Year,
-          total: student.total,
-        }));
-        setStudentsByYears(students);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    const fetchStudentsByAge = async () => {
-      const resp = await fetch("GET", endpoints.fetchStudentsByAge);
-      var array = [];
-      resp.map((student) => {
-        var a = { group: "10-20", value: student.age10to20 };
-        array.push(a);
-        var b = { group: "20-30", value: student.age20to30 };
-        array.push(b);
-        var c = { group: "30-40", value: student.age30to40 };
-        array.push(c);
-        var d = { group: "40-50", value: student.age40to50 };
-        array.push(d);
-        var e = { group: "50-60", value: student.age50to60 };
-        array.push(e);
-      });
-      setStudentsByAge(array);
-    };
-
-    fetchCountries();
-    fetchFaculties();
-    fetchJsonCountries();
-    fetchGrad();
-    fetchUnderGrad();
-    fetchStudentsByYear();
-    fetchStudentsByAge();
+    fetchCountries(setCountries);
+    fetchFaculties(setFaculties);
+    fetchJsonCountries(setJsonCountries);
+    fetchGrad(setGrads);
+    fetchUnderGrads(setUndergrads);
+    fetchStudentsByYear(setStudentsByYears);
+    fetchStudentsByAge(setStudentsByAge);
   }, []);
 
   useEffect(() => {
-    const fetchGendersByCountry = async () => {
-      const body = {
-        country,
-      };
-      console.log(body);
-      const resp = await fetch("POST", endpoints.fetchGenderByCountry, body);
-      console.log(resp);
-      const genders = resp.map((gender) => ({
-        name: gender.gender,
-        value: gender.count,
-      }));
-      console.log("fetchGendersByCountry -> genders", genders);
+    // const fetchGendersByCountry = async () => {
+    //   const body = {
+    //     country,
+    //   };
+    //   const resp = await fetch("POST", endpoints.fetchGenderByCountry, body);
+    //   const genders = resp.map((gender) => ({
+    //     name: gender.gender,
+    //     value: gender.count,
+    //   }));
+    //   setGenders(genders);
+    // };
 
-      setGenders(genders);
-    };
-
+    // TODO: Check why are we changing state of setSTudentByAge rather than by country
     const fetchAgeByCountry = async () => {
       const body = {
         country,
@@ -183,8 +112,9 @@ const Dashboard = () => {
       setStudentsByAge(array);
     };
 
-    fetchGendersByCountry();
-    fetchAgeByCountry();
+    fetchGendersByCountry(setGenders, country);
+    // TODO: Function called here
+    // fetchAgeByCountry();
   }, [country]);
 
   useEffect(() => {
@@ -202,6 +132,7 @@ const Dashboard = () => {
       setGenders(genders);
     };
 
+    // TODO: Check why are we changing state of the setStudentByAge in AgeByFaculty
     const fetchAgeByFaculty = async () => {
       const body = {
         faculty,
@@ -228,10 +159,12 @@ const Dashboard = () => {
     };
 
     fetchGenderByFaculty();
-    fetchAgeByFaculty();
+    // TODO: Function called here
+    // fetchAgeByFaculty();
   }, [faculty]);
 
   useEffect(() => {
+    // TODO: Check why are we changing state of the fetchAgeByFacultyAndCountry in AgeByFaculty
     const fetchAgeByFacultyAndCountry = async () => {
       const body = {
         faculty,
@@ -288,18 +221,20 @@ const Dashboard = () => {
     // if (country) fetchGendersByCountry();
     // if (country) fetchAgeByCountry();
     // if (country && faculty == false) fetchAgeByCountry();
+
     if (country && faculty) fetchGenderByFacultyAndCountry();
+
     // if (faculty) fetchGenderByFaculty();
     // if (faculty) fetchAgeByFaculty();
     // if (faculty && country == false) fetchAgeByFaculty();
-    if (faculty && country) fetchGenderByFacultyAndCountry();
-    if (faculty && country) fetchAgeByFacultyAndCountry();
-  }, [countries, country, faculties, faculty]);
 
-  console.log("Dashboard -> country", country);
+    // TODO: Check  fetchAgeByFacultyAndCountry being called here
+    // if (faculty && country) fetchAgeByFacultyAndCountry();
+  }, [countries, country, faculties, faculty]);
 
   const handleCountryChange = async (event, country) => {
     setCountry(country);
+    props.setOpenDrawer(false);
   };
   const handleFacultiesChange = async (event, fac) => {
     console.log(fac);
@@ -310,10 +245,42 @@ const Dashboard = () => {
     setColor(color);
   };
 
-  console.log("fetchGenderByFacultyAndCountry -> genders", genders);
+  const list = () => (
+    <div className={classes.sidebar}>
+      <List>
+        <ListItem button key={"filters"}>
+          <ListItemIcon>
+            <ChevronRight />
+          </ListItemIcon>
+          <ListItemText primary="Filters" />
+        </ListItem>
+        <ListItem button key="country-dropdown">
+          <Autocomplete
+            id="country-selector"
+            options={countries}
+            getOptionLabel={(option) => option}
+            style={{ width: 300 }}
+            renderInput={(params) => (
+              <TextField {...params} label="Country" variant="outlined" />
+            )}
+            onChange={handleCountryChange}
+          />
+        </ListItem>
+      </List>
+      <Divider />
+    </div>
+  );
 
   return (
     <div>
+      <Drawer
+        anchor="left"
+        open={props.openDrawer}
+        onClose={() => props.setOpenDrawer(false)}
+      >
+        {list()}
+      </Drawer>
+      <button onClick={() => props.setOpenDrawer(true)}>Click me</button>
       <Box display="flex" p={2}>
         <Card>
           <Grid
@@ -324,22 +291,7 @@ const Dashboard = () => {
             spacing={4}
           >
             <Grid item>
-              <Autocomplete
-                id="country-selector"
-                options={countries}
-                getOptionLabel={(option) => option}
-                style={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Country" variant="outlined" />
-                )}
-                onChange={handleCountryChange}
-              />
-            </Grid>
-            {/* <Grid item>
-              <Doughnut data={genders} />
-            </Grid> */}
-            <Grid item>
-              <JatinDoughnut data={genders} />
+              <DoughnutChart data={genders} />
             </Grid>
           </Grid>
           <Grid>
@@ -372,12 +324,12 @@ const Dashboard = () => {
 
       <Box display="flex" p={2}>
         <Card>
-          <button id="grad" onClick={() => handleChangeData(data1, "#f0fc03")}>
+          <button id="grad" onClick={() => handleChangeData(grads, "#f0fc03")}>
             Graduate
           </button>
           <button
             id="undergrad"
-            onClick={() => handleChangeData(data2, "#0bfc03")}
+            onClick={() => handleChangeData(underGrads, "#0bfc03")}
           >
             UnderGraduate
           </button>
@@ -389,7 +341,7 @@ const Dashboard = () => {
             spacing={4}
           >
             <Grid item>
-              <Switch data={GradData || data1} color={color || "f0fc03"} />
+              <Switch data={GradData || grads} color={color || "f0fc03"} />
             </Grid>
           </Grid>
         </Card>
@@ -418,7 +370,7 @@ const Dashboard = () => {
             spacing={4}
           >
             <Grid item>
-              <LineChart data={StudentsByYearArray} />
+              <LineChart data={studentsByYearArray} />
             </Grid>
           </Grid>
         </Card>
