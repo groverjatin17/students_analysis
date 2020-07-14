@@ -1,6 +1,18 @@
 import fetch from "./fetch";
 import endpoints from "./endpoints";
 
+const fetchStudentsByAge = async (setStudentsByAge) => {
+  const resp = await fetch("GET", endpoints.fetchStudentsByAge);
+  let studentsByAgeArray = [];
+  Object.entries(resp[0]).forEach(([key, value]) => {
+    let tempObj = {};
+    tempObj.group = `${key.substring(3, 5)}-${key.substring(7)}`;
+    tempObj.value = value;
+    studentsByAgeArray.push(tempObj);
+  });
+  setStudentsByAge(studentsByAgeArray);
+};
+
 const fetchCountries = async (setCountries) => {
   try {
     const resp = await fetch("GET", endpoints.fetchCountries);
@@ -59,18 +71,6 @@ const fetchStudentsByYear = async (setStudentsByYears) => {
   } catch (e) {
     console.log(e);
   }
-};
-
-const fetchStudentsByAge = async (setStudentsByAge) => {
-  const resp = await fetch("GET", endpoints.fetchStudentsByAge);
-  let studentsByAgeArray = [];
-  Object.entries(resp[0]).forEach(([key, value]) => {
-    let tempObj = {};
-    tempObj.group = `${key.substring(3, 5)}-${key.substring(7)}`;
-    tempObj.value = value;
-    studentsByAgeArray.push(tempObj);
-  });
-  setStudentsByAge(studentsByAgeArray);
 };
 
 const fetchGendersByCountry = async (setGenders, country) => {

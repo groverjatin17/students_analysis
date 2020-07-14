@@ -101,7 +101,13 @@ export default class DoughnutChart extends PureComponent {
           name: "Male",
           value: item.value,
         };
+      } else if (item.name === "N") {
+        return {
+          name: "Non-Binary",
+          value: item.value,
+        };
       }
+      return item;
     });
     return expandedDataArray;
   };

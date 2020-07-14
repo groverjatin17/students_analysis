@@ -25,7 +25,8 @@ import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import ChevronRight from "@material-ui/icons/ChevronRight";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import Typography from "@material-ui/core/Typography";
 
 import {
   fetchCountries,
@@ -37,6 +38,7 @@ import {
   fetchStudentsByAge,
   fetchGendersByCountry,
 } from "./utils/apiStore";
+
 import DoughnutChart from "./components/DoughnutChart";
 
 const useStyles = makeStyles((theme) => ({
@@ -75,18 +77,6 @@ const Dashboard = (props) => {
   }, []);
 
   useEffect(() => {
-    // const fetchGendersByCountry = async () => {
-    //   const body = {
-    //     country,
-    //   };
-    //   const resp = await fetch("POST", endpoints.fetchGenderByCountry, body);
-    //   const genders = resp.map((gender) => ({
-    //     name: gender.gender,
-    //     value: gender.count,
-    //   }));
-    //   setGenders(genders);
-    // };
-
     // TODO: Check why are we changing state of setSTudentByAge rather than by country
     const fetchAgeByCountry = async () => {
       const body = {
@@ -127,12 +117,11 @@ const Dashboard = (props) => {
       console.log(resp);
       const genders = resp.map((gender) => ({
         value: gender.count,
-        label: gender.gender,
+        name: gender.gender,
       }));
       setGenders(genders);
     };
 
-    // TODO: Check why are we changing state of the setStudentByAge in AgeByFaculty
     const fetchAgeByFaculty = async () => {
       const body = {
         faculty,
@@ -158,10 +147,9 @@ const Dashboard = (props) => {
       setStudentsByAge(array);
     };
 
-    fetchGenderByFaculty();
-    // TODO: Function called here
+    if (country === "") fetchGenderByFaculty();
     // fetchAgeByFaculty();
-  }, [faculty]);
+  }, [country, faculty]);
 
   useEffect(() => {
     // TODO: Check why are we changing state of the fetchAgeByFacultyAndCountry in AgeByFaculty
@@ -212,49 +200,42 @@ const Dashboard = (props) => {
       var array = [];
 
       const genders = resp.map((gender) => ({
+        name: gender.gender,
         value: gender.count,
-        label: gender.gender,
       }));
       setGenders(genders);
     };
 
-    // if (country) fetchGendersByCountry();
-    // if (country) fetchAgeByCountry();
-    // if (country && faculty == false) fetchAgeByCountry();
-
     if (country && faculty) fetchGenderByFacultyAndCountry();
-
-    // if (faculty) fetchGenderByFaculty();
-    // if (faculty) fetchAgeByFaculty();
-    // if (faculty && country == false) fetchAgeByFaculty();
 
     // TODO: Check  fetchAgeByFacultyAndCountry being called here
     // if (faculty && country) fetchAgeByFacultyAndCountry();
-  }, [countries, country, faculties, faculty]);
+  }, [country, faculty]);
 
   const handleCountryChange = async (event, country) => {
     setCountry(country);
     props.setOpenDrawer(false);
   };
   const handleFacultiesChange = async (event, fac) => {
-    console.log(fac);
     setFaculty(fac);
+    props.setOpenDrawer(false);
   };
   const handleChangeData = (d, color) => {
     setGradData(d);
     setColor(color);
   };
 
-  const list = () => (
+  const sidebarItems = () => (
     <div className={classes.sidebar}>
       <List>
         <ListItem button key={"filters"}>
           <ListItemIcon>
-            <ChevronRight />
+            <AddCircleIcon />
           </ListItemIcon>
           <ListItemText primary="Filters" />
         </ListItem>
-        <ListItem button key="country-dropdown">
+        <Divider />
+        <ListItem button key="country-filter">
           <Autocomplete
             id="country-selector"
             options={countries}
@@ -264,6 +245,19 @@ const Dashboard = (props) => {
               <TextField {...params} label="Country" variant="outlined" />
             )}
             onChange={handleCountryChange}
+          />
+        </ListItem>
+        <Divider />
+        <ListItem button key="faculties-filter">
+          <Autocomplete
+            id="faculties-selector"
+            options={faculties}
+            getOptionLabel={(option) => option}
+            style={{ width: 300 }}
+            renderInput={(params) => (
+              <TextField {...params} label="Faculties" variant="outlined" />
+            )}
+            onChange={handleFacultiesChange}
           />
         </ListItem>
       </List>
@@ -278,73 +272,9 @@ const Dashboard = (props) => {
         open={props.openDrawer}
         onClose={() => props.setOpenDrawer(false)}
       >
-        {list()}
+        {sidebarItems()}
       </Drawer>
-      <button onClick={() => props.setOpenDrawer(true)}>Click me</button>
-      <Box display="flex" p={2}>
-        <Card>
-          <Grid
-            container
-            classes={{ root: classes.gridMain }}
-            alignItems="center"
-            justify="center"
-            spacing={4}
-          >
-            <Grid item>
-              <DoughnutChart data={genders} />
-            </Grid>
-          </Grid>
-          <Grid>
-            <Autocomplete
-              id="faculties-selector"
-              options={faculties}
-              getOptionLabel={(option) => option}
-              style={{ width: 300 }}
-              renderInput={(params) => (
-                <TextField {...params} label="Faculties" variant="outlined" />
-              )}
-              onChange={handleFacultiesChange}
-            />
-          </Grid>
-        </Card>
-        <Card>
-          <Grid
-            container
-            classes={{ root: classes.gridMain }}
-            alignItems="center"
-            justify="center"
-            spacing={4}
-          >
-            <Grid>
-              <AgeBarGraphs data={studentsByAge} />
-            </Grid>
-          </Grid>
-        </Card>
-      </Box>
-
-      <Box display="flex" p={2}>
-        <Card>
-          <button id="grad" onClick={() => handleChangeData(grads, "#f0fc03")}>
-            Graduate
-          </button>
-          <button
-            id="undergrad"
-            onClick={() => handleChangeData(underGrads, "#0bfc03")}
-          >
-            UnderGraduate
-          </button>
-          <Grid
-            container
-            classes={{ root: classes.gridMain }}
-            alignItems="center"
-            justify="center"
-            spacing={4}
-          >
-            <Grid item>
-              <Switch data={GradData || grads} color={color || "f0fc03"} />
-            </Grid>
-          </Grid>
-        </Card>
+      <Box p={2}>
         <Card>
           <Grid
             container
@@ -359,9 +289,8 @@ const Dashboard = (props) => {
           </Grid>
         </Card>
       </Box>
-
-      <Box>
-        <Card className="lineChart">
+      <Box display="flex" p={2}>
+        <Card>
           <Grid
             container
             classes={{ root: classes.gridMain }}
@@ -370,7 +299,23 @@ const Dashboard = (props) => {
             spacing={4}
           >
             <Grid item>
-              <LineChart data={studentsByYearArray} />
+              <DoughnutChart data={genders} />
+              <Typography variant="h5" gutterBottom>
+                Students/Gender ratio
+              </Typography>
+            </Grid>
+          </Grid>
+        </Card>
+        <Card>
+          <Grid
+            container
+            classes={{ root: classes.gridMain }}
+            alignItems="center"
+            justify="center"
+            spacing={4}
+          >
+            <Grid>
+              <AgeBarGraphs data={studentsByAge} />
             </Grid>
           </Grid>
         </Card>
