@@ -9,6 +9,8 @@ import Dashboard from "./dashboard";
 import theme from "./theme";
 import "./App.css";
 
+import DashboardMain from "./dashboard1";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flex: 1,
@@ -22,13 +24,11 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles();
 
-  const [openDrawer, setOpenDrawer] = useState(false);
-
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
         <div className={classes.root}>
-          <AppBar color="primary" position="fixed">
+          {/* <AppBar color="primary" position="fixed">
             <Toolbar>
               <IconButton
                 edge="start"
@@ -36,15 +36,16 @@ function App() {
                 color="inherit"
                 aria-label="menu"
               >
-                <MenuIcon onClick={() => setOpenDrawer(true)} />
+                <MenuIcon/>
               </IconButton>
               <Typography variant="h6">
                 Saint Mary's University Students Data Dashboard
               </Typography>
             </Toolbar>
-          </AppBar>
+          </AppBar> */}
           <div className={classes.toolbar} />
-          <Dashboard openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
+          {/* <Dashboard openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} /> */}
+          <DashboardMain />
         </div>
       </ThemeProvider>
     </div>

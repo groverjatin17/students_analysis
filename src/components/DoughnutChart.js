@@ -29,7 +29,7 @@ const animatePie = (props) => {
   return (
     <g>
       <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
-        {payload.name}
+        {payload.gender}
       </text>
       <Sector
         cx={cx}
@@ -91,20 +91,20 @@ export default class DoughnutChart extends PureComponent {
   expandedForm = (data) => {
     let expandedDataArray = [...data];
     expandedDataArray = expandedDataArray.map((item) => {
-      if (item.name === "F") {
+      if (item.gender === "F") {
         return {
-          name: "Female",
-          value: item.value,
+          gender: "Female",
+          count: item.count,
         };
-      } else if (item.name === "M") {
+      } else if (item.gender === "M") {
         return {
-          name: "Male",
-          value: item.value,
+          gender: "Male",
+          count: item.count,
         };
-      } else if (item.name === "N") {
+      } else if (item.gender === "N") {
         return {
-          name: "Non-Binary",
-          value: item.value,
+          gender: "Non-Binary",
+          count: item.count,
         };
       }
       return item;
@@ -117,7 +117,10 @@ export default class DoughnutChart extends PureComponent {
     data =
       data.length > 0
         ? this.expandedForm(data)
-        : [{ name: "Student", value: 100 }];
+        : [{ gender: "Student", count: 100 }];
+
+    console.log("TCL: DoughnutChart -> render -> data", data);
+
     return (
       <PieChart width={400} height={400}>
         <Pie
@@ -129,7 +132,7 @@ export default class DoughnutChart extends PureComponent {
           innerRadius={60}
           outerRadius={80}
           fill="#8884d8"
-          dataKey="value"
+          dataKey="count"
           onMouseEnter={this.onPieEnter}
         />
       </PieChart>
