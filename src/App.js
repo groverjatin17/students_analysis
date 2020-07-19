@@ -1,15 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import Dashboard from "./dashboard";
 import theme from "./theme";
 import "./App.css";
-
-import DashboardMain from "./dashboard1";
+import DashboardMain from "./MainDashboard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,23 +21,7 @@ function App() {
     <div className="App">
       <ThemeProvider theme={theme}>
         <div className={classes.root}>
-          {/* <AppBar color="primary" position="fixed">
-            <Toolbar>
-              <IconButton
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="menu"
-              >
-                <MenuIcon/>
-              </IconButton>
-              <Typography variant="h6">
-                Saint Mary's University Students Data Dashboard
-              </Typography>
-            </Toolbar>
-          </AppBar> */}
           <div className={classes.toolbar} />
-          {/* <Dashboard openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} /> */}
           <DashboardMain />
         </div>
       </ThemeProvider>

@@ -27,7 +27,7 @@ export default function FilterBar(props) {
             id="gender-outlined"
             options={["Male", "Female", "Non-Binary"]}
             getOptionLabel={(option) => option}
-            style={{ width: 300 }}
+            style={{ width: 280 }}
             filterSelectedOptions
             renderInput={(params) => (
               <TextField {...params} variant="outlined" label="Gender" />
@@ -44,7 +44,7 @@ export default function FilterBar(props) {
             id="countries-outlined"
             options={countries}
             getOptionLabel={(option) => option}
-            style={{ width: 300 }}
+            style={{ width: 280 }}
             filterSelectedOptions
             renderInput={(params) => (
               <TextField {...params} variant="outlined" label="Country" />
@@ -61,7 +61,7 @@ export default function FilterBar(props) {
             id="faculties-outlined"
             options={faculties}
             getOptionLabel={(option) => option}
-            style={{ width: 300 }}
+            style={{ width: 280 }}
             filterSelectedOptions
             renderInput={(params) => (
               <TextField {...params} variant="outlined" label="Faculty" />
@@ -89,7 +89,7 @@ export default function FilterBar(props) {
               "2020",
             ]}
             getOptionLabel={(option) => option}
-            style={{ width: 300 }}
+            style={{ width: 280 }}
             filterSelectedOptions
             renderInput={(params) => (
               <TextField {...params} variant="outlined" label="Year" />
@@ -105,7 +105,7 @@ export default function FilterBar(props) {
             id="gradStatus-outlined"
             options={["Graduate", "Undergraduate"]}
             getOptionLabel={(option) => option}
-            style={{ width: 300 }}
+            style={{ width: 280 }}
             filterSelectedOptions
             renderInput={(params) => (
               <TextField {...params} variant="outlined" label="Grad Status" />

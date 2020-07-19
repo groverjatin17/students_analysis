@@ -30,7 +30,7 @@ const animatePie = (props) => {
   return (
     <g>
       <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
-        {payload.gender}
+        {payload.level}
       </text>
       <Sector
         cx={cx}
@@ -75,7 +75,7 @@ const animatePie = (props) => {
   );
 };
 
-export default class DoughnutChart extends PureComponent {
+export default class PieChartGradUngrad extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -89,42 +89,16 @@ export default class DoughnutChart extends PureComponent {
     });
   };
 
-  expandedForm = (data) => {
-    let expandedDataArray = [...data];
-    expandedDataArray = expandedDataArray.map((item) => {
-      if (item.gender === "F") {
-        return {
-          gender: "Female",
-          count: item.count,
-        };
-      } else if (item.gender === "M") {
-        return {
-          gender: "Male",
-          count: item.count,
-        };
-      } else if (item.gender === "N") {
-        return {
-          gender: "Non-Binary",
-          count: item.count,
-        };
-      }
-      return item;
-    });
-    return expandedDataArray;
-  };
-
   render() {
     let { data } = this.props;
-    data =
-      data.length > 0
-        ? this.expandedForm(data)
-        : [{ gender: "Student", count: 100 }];
+    data = data.length > 0 ? data : [{ level: "Level", count: 100 }];
 
     return (
       <PieChart
         width={500}
         height={400}
         margin={{ left: 50, top: 5, bottom: 5, right: 5 }}
+        fill="#d89b27"
       >
         <Pie
           activeIndex={this.state.activeIndex}
@@ -134,7 +108,7 @@ export default class DoughnutChart extends PureComponent {
           cy={200}
           innerRadius={60}
           outerRadius={80}
-          fill="#8884d8"
+          fill="#fdca53"
           dataKey="count"
           onMouseEnter={this.onPieEnter}
         />

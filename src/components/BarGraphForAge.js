@@ -12,11 +12,10 @@ import {
 export default class BarGraphForAge extends PureComponent {
   render() {
     const { data } = this.props;
-    console.log("TCL: BarGraphForAge -> render -> data", data);
 
     return (
       <BarChart
-        width={500}
+        width={415}
         height={420}
         data={data}
         margin={{
