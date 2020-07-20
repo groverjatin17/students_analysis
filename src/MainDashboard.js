@@ -204,13 +204,21 @@ export default function DashboardMain(props) {
   };
 
   useEffect(() => {
-    fetchStudentsByYear(setStudentByYearData);
     fetchCountries(setCountries);
     fetchFaculties(setFaculties);
     fetchJsonCountries(setJsonCountries);
   }, []);
 
   useEffect(() => {
+    fetchStudentsByYear(
+      setStudentByYearData,
+      countryFilter,
+      facultyFilter,
+      genderFilter,
+      yearFilter,
+      gradStatusFilter
+    );
+
     fetchGenders(
       setGendersData,
       countryFilter,
