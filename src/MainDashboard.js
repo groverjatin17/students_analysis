@@ -22,9 +22,7 @@ import FacultyBarGraph from "./components/FacultyBarGraph";
 import PieChartGradUngrad from "./components/PieChartGradUngrad";
 import AreaGraphCGPA from "./components/AreaGraphCGPA";
 import BarGraphCountryPop from "./components/BarGraphCountryPop";
-
-import { CircularProgressbar } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
+import TotalStudentsMeter from "./components/TotalStudentsMeter";
 
 import FilterBar from "./filters";
 
@@ -45,7 +43,6 @@ import {
 } from "./utils/apiStore";
 
 const drawerWidth = 280;
-const TOTAL_STUDENTS = 159950;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -145,14 +142,7 @@ export default function DashboardMain(props) {
     ),
     meterGraph: (
       <Card className={classes.meter}>
-        <CircularProgressbar
-          value={totalStudentsfiltered}
-          text={` ${((totalStudentsfiltered / TOTAL_STUDENTS) * 100).toFixed(
-            2
-          )}%`}
-          maxValue={TOTAL_STUDENTS}
-          styles={{ root: { padding: "10px" }, text: { fontSize: "10px" } }}
-        />
+        <TotalStudentsMeter data={totalStudentsfiltered} />
         <h1 style={{ marginTop: 0 }}>Students</h1>
       </Card>
     ),
@@ -367,15 +357,7 @@ export default function DashboardMain(props) {
             className={classes.meter}
             onClick={() => handleOpen("meterGraph")}
           >
-            <CircularProgressbar
-              value={totalStudentsfiltered}
-              text={` ${(
-                (totalStudentsfiltered / TOTAL_STUDENTS) *
-                100
-              ).toFixed(2)}%`}
-              maxValue={TOTAL_STUDENTS}
-              styles={{ root: { padding: "10px" }, text: { fontSize: "10px" } }}
-            />
+            <TotalStudentsMeter data={totalStudentsfiltered} />
             <h1 style={{ marginTop: 0 }}>Students</h1>
           </Card>
           <Card
