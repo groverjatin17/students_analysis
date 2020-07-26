@@ -15,7 +15,7 @@ export default class BarGraphForAge extends PureComponent {
 
     return (
       <BarChart
-        width={500}
+        width={800}
         height={420}
         data={data}
         margin={{
