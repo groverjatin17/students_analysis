@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     width: 300,
   },
   ageBar: {
-    maxWidth: 500,
+    // maxWidth: 500,
     marginLeft: 18,
   },
   halfPie: {
@@ -367,7 +367,7 @@ export default function DashboardMain(props) {
             <StudentEnrolledLineChart data={studentByYearData} />
           </Card>
         </div>
-        {/* <div style={{ display: "flex", marginBottom: "25px" }}>
+        <div style={{ display: "flex", marginBottom: "25px" }}>
           <Card
             className={classes.halfPie}
             onClick={() => handleOpen("halfPie")}
@@ -403,7 +403,7 @@ export default function DashboardMain(props) {
         </Card>
         <Card onClick={() => handleOpen("countryPop")}>
           <BarGraphCountryPop data={countriesByStudentCount} />
-        </Card> */}
+        </Card>
       </main>
     </div>
   );
