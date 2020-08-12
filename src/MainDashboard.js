@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     width: 300,
   },
   ageBar: {
-    // maxWidth: 500,
+    maxWidth: 500,
     marginLeft: 18,
   },
   halfPie: {

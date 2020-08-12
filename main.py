@@ -146,7 +146,7 @@ def get_genders():
 @app.route('/ages', methods=['POST'])
 def fetch_by_ages():
     cur = mysql.connection.cursor()
-    select = "select COUNT(IF(age BETWEEN 15 AND 20,1,null)) AS age15to20,COUNT(IF(age BETWEEN 20 AND 25,1,null)) AS age20to25,COUNT(IF(age BETWEEN 25 AND 30,1,null)) AS age25to30,COUNT(IF(age BETWEEN 30 AND 35,1,null)) AS age30to35,COUNT(IF(age BETWEEN 35 AND 40,1,null)) AS age35to40,COUNT(IF(age BETWEEN 40 AND 45,1,null)) AS age40to45,COUNT(IF(age BETWEEN 45 AND 50,1,null)) AS age45to50,COUNT(IF(age BETWEEN 50 AND 55,1,null)) AS age50to55,COUNT(IF(age BETWEEN 55 AND 60,1,null)) AS age55to60 \
+    select = "select COUNT(IF(age BETWEEN 10 AND 20,1,null)) AS age10to20,COUNT(IF(age BETWEEN 20 AND 30,1,null)) AS age20to30,COUNT(IF(age BETWEEN 30 AND 40,1,null)) AS age30to40,COUNT(IF(age BETWEEN 40 AND 50,1,null)) AS age40to50,COUNT(IF(age BETWEEN 50 AND 60,1,null)) AS age50to60 \
               FROM demographic \
               WHERE \
               {0} FIND_IN_SET(gender, %s) \
