@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May 12 14:29:31 2020
-
-@author: arunr
-"""
 
 from flask import Flask, render_template, jsonify
 from flask_mysqldb import MySQL

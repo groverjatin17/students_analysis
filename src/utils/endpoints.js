@@ -1,4 +1,5 @@
-const baseURL = "http://localhost:5000/";
+// const baseURL = "http://localhost:5000/";
+const baseURL = "https://pydashboardapi.herokuapp.com/";
 export default {
   fetchCountries: `${baseURL}countries`,
   fetchStudentsByYear: `${baseURL}students`,
